@@ -2,8 +2,9 @@
 // import logo from './logo.svg';
 import { useState } from 'react';
 import './App.css';
-import Todos, { type Todo } from './components/Todos';
+import Todos from './components/Todos';
 import AddTodo from './components/AddToto';
+import Todo from './models/todo';
 
 function App() {
 
@@ -11,29 +12,13 @@ function App() {
   const parsedTodos: Todo[] | null = savedTodos ? JSON.parse(savedTodos) : null;
 
   const [todos, setTodos] = useState<Todo[]>(parsedTodos ?? [
-    {
-      id: '1',
-      title: 'Learn React',
-      completed: false,
-    },
-    {
-      id: '2',
-      title: 'Learn TypeScript',
-      completed: true,
-    },
-    {
-      id: '3',
-      title: 'Build a Todo App',
-      completed: false,
-    },
+    new Todo('Learn React'),
+    new Todo('Learn TypeScript'),
+    new Todo('Build a Todo App'),
   ]);
 
   function onAddTodo (title: string) {
-    const newTodo: Todo = {
-      id: Math.random().toString(36).slice(2),
-      title,
-      completed: false,
-    };
+    const newTodo = new Todo(title);
     setTodos((prevTodos) => [...prevTodos, newTodo]);
     localStorage.setItem('todos', JSON.stringify([...todos, newTodo]));
   }
