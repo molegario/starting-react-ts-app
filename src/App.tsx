@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+// import React from 'react';
+// import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Todos, { type Todo } from './components/Todos';
+import AddTodo from './components/AddToto';
 
 function App() {
+
+  const savedTodos = localStorage.getItem('todos');
+  const parsedTodos: Todo[] | null = savedTodos ? JSON.parse(savedTodos) : null;
+
+  const [todos, setTodos] = useState<Todo[]>(parsedTodos ?? [
+    {
+      id: '1',
+      title: 'Learn React',
+      completed: false,
+    },
+    {
+      id: '2',
+      title: 'Learn TypeScript',
+      completed: true,
+    },
+    {
+      id: '3',
+      title: 'Build a Todo App',
+      completed: false,
+    },
+  ]);
+
+  function onAddTodo (title: string) {
+    const newTodo: Todo = {
+      id: Math.random().toString(36).slice(2),
+      title,
+      completed: false,
+    };
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+    localStorage.setItem('todos', JSON.stringify([...todos, newTodo]));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <Todos todos={todos} />
+        <AddTodo onAddTodo={onAddTodo}/>
+      </div>  
+    </>
   );
 }
 
