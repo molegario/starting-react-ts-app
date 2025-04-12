@@ -38,12 +38,25 @@ function App() {
     localStorage.setItem('todos', JSON.stringify([...todos, newTodo]));
   }
 
+  function onToggleTodo (id: string) {
+    setTodos((prevTodos) => {
+      const updatedTodos = prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      });
+      localStorage.setItem('todos', JSON.stringify(updatedTodos));
+      return updatedTodos;
+    });
+  }
+
   return (
     <>
       <div>
-        <Todos todos={todos} />
-        <AddTodo onAddTodo={onAddTodo}/>
-      </div>  
+        <Todos todos={todos} onToggleTodo={onToggleTodo} />
+        <AddTodo onAddTodo={onAddTodo} />
+      </div>
     </>
   );
 }
