@@ -1,23 +1,26 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useContext } from "react";
 import Todo from "../../models/todo";
 import classes from "./Todo.module.css";
+import { TodoContext } from "../../store/todo-context";
 
 interface TodoItemProps {
   todo: Todo;
-  onCompletedClick: (evt: MouseEvent<HTMLInputElement>) => void;
-  onRemoveClick: (evt: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const TodoItem: FC<TodoItemProps> = ({
   todo,
-  onCompletedClick,
-  onRemoveClick,
 }) => {
 
+  const {
+    toggleTodo: onCompletedClick,
+    removeTodo: onRemoveClick,
+  } = useContext(TodoContext);
+
   function confirmRemove (evt: MouseEvent<HTMLButtonElement>) {
+    evt.stopPropagation(); // Prevent the click event from bubbling up
     const confirmed = window.confirm("Are you sure you want to remove this todo?");
     if (confirmed) {
-      onRemoveClick(evt);
+      onRemoveClick(todo.id);
     }
   }
 
@@ -27,7 +30,7 @@ const TodoItem: FC<TodoItemProps> = ({
         <input
           type="checkbox"
           checked={todo.completed}
-          onClick={onCompletedClick}
+          onClick={() => onCompletedClick(todo.id)}
         />
         {todo.title}
       </div>

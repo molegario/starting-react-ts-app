@@ -1,27 +1,9 @@
-import { FC, MouseEvent } from "react";
-import Todo from "../../models/todo";
+import { FC, useContext } from "react";
 import TodoItem from "./Todo";
+import { TodoContext } from "../../store/todo-context";
 
-interface TodosProps {
-  todos: Todo[];
-  onToggleTodo: (id: string) => void;
-  onRemoveTodo: (id: string) => void;
-}
-
-const Todos: FC<TodosProps> = ({ todos, onToggleTodo, onRemoveTodo }) => {
-  function getOnClickTodo(id: string) {
-    return (evt: MouseEvent<HTMLInputElement>) => {
-      evt.stopPropagation();
-      onToggleTodo(id);
-    };
-  }
-
-  function getOnRemoveTodo(id: string) {
-    return (evt: MouseEvent<HTMLButtonElement>) => {
-      evt.stopPropagation();
-      onRemoveTodo(id);
-    };
-  }
+const Todos: FC = () => {
+  const { todos } = useContext(TodoContext);
 
   return (
     <ul>
@@ -29,8 +11,6 @@ const Todos: FC<TodosProps> = ({ todos, onToggleTodo, onRemoveTodo }) => {
         <TodoItem
           key={todo.id}
           todo={todo}
-          onCompletedClick={getOnClickTodo(todo.id)}
-          onRemoveClick={getOnRemoveTodo(todo.id)}
         />
       ))}
     </ul>

@@ -1,13 +1,18 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import Modal from "../Modal/Modal";
 import classes from "./AddTodo.module.css";
+import { TodoContext } from "../../store/todo-context";
 
-interface AddTodoProps {
-  onAddTodo: (title: string) => void;
-}
+// interface AddTodoProps {
+//   // onAddTodo: (title: string) => void;
+// }
 
-const AddTodo: FC<AddTodoProps> = ({ onAddTodo }) => {
+const AddTodo: FC = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const {
+    addTodo: onAddTodo,
+  } = useContext(TodoContext);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
