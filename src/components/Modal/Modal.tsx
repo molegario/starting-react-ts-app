@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import classes from "./Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -17,10 +18,10 @@ const Modal:FC<PropsWithChildren<ModalProps>> = ({ //NOTE use PropsWithChildren 
     () => {
       const dialog = innerRef.current;
       if(isOpen) {
-        dialog?.showModal();
+        dialog!.showModal(); // ! is used to assert that dialog is not null
       }
       return () => {
-        dialog?.close();
+        dialog!.close(); // ! is used to assert that dialog is not null
         onClose();
       }
     },
@@ -28,10 +29,10 @@ const Modal:FC<PropsWithChildren<ModalProps>> = ({ //NOTE use PropsWithChildren 
   );
 
   return createPortal(
-    <dialog className="modal" ref={innerRef} onClose={onClose}>
+    <dialog className={classes.modal} ref={innerRef} onClose={onClose}>
       {
         isOpen && (
-          <div className="modal-content">
+          <div id="modal-content">
             {children}
           </div>
         )

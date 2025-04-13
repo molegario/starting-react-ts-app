@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import Modal from "./Modal";
+import Modal from "../Modal/Modal";
+import classes from "./AddTodo.module.css";
 
 interface AddTodoProps {
   onAddTodo: (title: string) => void;
@@ -36,7 +37,7 @@ const AddTodo: FC<AddTodoProps> = ({ onAddTodo }) => {
                 required
               />
             </p>
-            <div className="actions">
+            <div className={classes.actions}>
               <button type="button" onClick={() => setShowModal(false)}>
                 Cancel
               </button>
@@ -45,16 +46,17 @@ const AddTodo: FC<AddTodoProps> = ({ onAddTodo }) => {
           </form>
         </Modal>
       )}
-      <button
-        onClick={() => {
-          setShowModal(true);
-        }}
-      >
-        Add Todo
-      </button>
+      <p className={classes.listactions}>
+        <button
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          Add Todo
+        </button>
+      </p>
     </>
   );
 };
-
 
 export default AddTodo;
